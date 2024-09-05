@@ -1,32 +1,39 @@
-import express, { Request, Response } from "express";
+import express, { json, Request, Response } from "express";
 import db from "@repo/db/client";
 const app = express();
 
+app.use(json());
 app.post("/hdfcWebhook", async (req: Request, res: Response) => {
   // Todo: Add zod validation
   // todo2: Add a secret so that when hdfc sends a req we know that's hdfc
   const paymentInformation: {
     token: string;
-    userId: string;
-    amount: string;
   } = {
     token: req.body.token,
-    userId: req.body.user_identifier,
-    amount: req.body.amount,
   };
 
   // add an entry in onRamptansactions table
   try {
     // update in onRamp status
+    const transaction = await db.onRampTransaction.findFirst({
+      where: {
+        token: paymentInformation.token,
+      },
+    });
+
+    if (!transaction || !transaction.userId || !transaction.amount) {
+      throw new Error("invalid transaction " + transaction?.id);
+    }
+
     //  update the balance of the user
     await db.$transaction([
       db.balance.update({
         where: {
-          userId: Number(paymentInformation.userId),
+          userId: Number(transaction?.userId),
         },
         data: {
           amount: {
-            increment: Number(paymentInformation.amount),
+            increment: Number(transaction?.amount),
           },
         },
         //
