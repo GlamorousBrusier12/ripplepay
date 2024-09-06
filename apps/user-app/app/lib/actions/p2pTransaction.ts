@@ -72,6 +72,16 @@ export async function createP2pTransfer(
       });
       console.log("transaction done!");
     });
+
+    await prisma.p2pTransfer.create({
+      data: {
+        amount,
+        timestamp: new Date(),
+        toUserId: Number(receiverUser.id),
+        fromUserId: Number(currentUserId),
+      },
+    });
+
     return {
       message: "transaction done",
       isSuccess: true,
