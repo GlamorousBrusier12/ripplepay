@@ -50,14 +50,21 @@ export const authOptions = {
             data: {
               number: credentials.phone,
               password: hashedPassword,
+              Balance: {
+                create: [
+                  {
+                    amount: 0,
+                    locked: 0,
+                  },
+                ],
+              },
             },
           });
 
           return {
-            // id: user.id.toString(),
-            // name: user.name,
-            // email: user.number
-            error: "not done",
+            id: user.id.toString(),
+            name: user.name,
+            email: user.number,
           };
         } catch (e) {
           console.error(e);
