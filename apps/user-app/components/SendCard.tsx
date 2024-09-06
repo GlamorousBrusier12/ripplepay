@@ -2,7 +2,7 @@
 import { Button } from "@repo/ui/button";
 import { Card } from "@repo/ui/card";
 import { Center } from "@repo/ui/center";
-import { TextInput } from "@repo/ui/textInput";
+import { TextInput } from "@repo/ui/textinput";
 import { useState } from "react";
 import { createP2pTransfer } from "../app/lib/actions/p2pTransaction";
 
