@@ -1,5 +1,5 @@
 "use server";
-import db from "@repo/db/client";
+import prisma from "@repo/db/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
 type p2pResponse = {
@@ -23,7 +23,7 @@ export async function createP2pTransfer(
     }
     console.log("current session user id", currentUserId);
 
-    const receiverUser = await db.user.findFirst({
+    const receiverUser = await prisma.user.findFirst({
       where: {
         number: receiverNumber,
       },
@@ -37,7 +37,10 @@ export async function createP2pTransfer(
 
     console.log("control reached here");
 
-    await db.$transaction(async (tsx) => {
+    await prisma.$transaction(async (tsx) => {
+      // locking the user row for balance table
+      await tsx.$queryRaw`SELECT * FROM "Balance" WHERE "userId" = ${Number(currentUserId)} FOR UPDATE;`;
+
       const sender = await tsx.balance.findFirst({
         where: { userId: Number(currentUserId) },
       });

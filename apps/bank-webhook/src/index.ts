@@ -1,5 +1,5 @@
 import express, { json, Request, Response } from "express";
-import db from "@repo/db/client";
+import prisma from "@repo/db/client";
 const app = express();
 
 app.use(json());
@@ -15,7 +15,7 @@ app.post("/hdfcWebhook", async (req: Request, res: Response) => {
   // add an entry in onRamptansactions table
   try {
     // update in onRamp status
-    const transaction = await db.onRampTransaction.findFirst({
+    const transaction = await prisma.onRampTransaction.findFirst({
       where: {
         token: paymentInformation.token,
       },
@@ -26,8 +26,8 @@ app.post("/hdfcWebhook", async (req: Request, res: Response) => {
     }
 
     //  update the balance of the user
-    await db.$transaction([
-      db.balance.update({
+    await prisma.$transaction([
+      prisma.balance.update({
         where: {
           userId: Number(transaction?.userId),
         },
@@ -38,7 +38,7 @@ app.post("/hdfcWebhook", async (req: Request, res: Response) => {
         },
         //
       }),
-      db.onRampTransaction.update({
+      prisma.onRampTransaction.update({
         where: {
           token: paymentInformation.token,
         },

@@ -1,4 +1,4 @@
-import db from "@repo/db/client";
+import prisma from "@repo/db/client";
 import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcrypt";
 
