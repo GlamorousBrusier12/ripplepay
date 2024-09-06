@@ -7,7 +7,7 @@
     "./card": "./src/card.tsx",
     "./code": "./src/code.tsx",
     "./center": "./src/Center.tsx",
-    "./textInput": "./src/TextInput.tsx",
+    "./textinput": "./src/TextInput.tsx",
     "./select": "./src/Select.tsx",
     "./appbar": "./src/Appbar.tsx"
   },
