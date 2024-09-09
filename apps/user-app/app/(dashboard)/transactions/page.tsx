@@ -26,15 +26,17 @@ async function getP2pTransactions() {
     },
   });
 
-  return transactions.map((txn) => ({
-    time: txn.timestamp,
-    amount: txn.amount,
-    isReceiver: txn.toUserId == session?.user?.id,
-    otherUserName:
-      txn.toUserId == session?.user?.id
-        ? txn.toUser.number
-        : txn.fromUser.number,
-  }));
+  return transactions.map((txn: (typeof transactions)[0]) => {
+    return {
+      time: txn.timestamp,
+      amount: txn.amount,
+      isReceiver: txn.toUserId == session?.user?.id,
+      otherUserName:
+        txn.toUserId == session?.user?.id
+          ? txn.toUser.number
+          : txn.fromUser.number,
+    };
+  });
 }
 
 export default async function () {
