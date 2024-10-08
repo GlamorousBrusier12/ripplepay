@@ -1,5 +1,5 @@
 "use client";
-import { useBalance } from "@repo/store/useBalance";
+import { useBalance } from "@repo/store/usebalance";
 
 export default function Home() {
   const balance = useBalance();
