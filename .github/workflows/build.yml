@@ -24,7 +24,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: naveenkalagarla18/ripplepay-app:v1
+          tags: naveenkalagarla18/ripplepay-app:latest
 
       - name: Verify Pushed Image
-        run: docker pull naveenkalagarla18/ripplepay-app:v1
+        run: docker pull naveenkalagarla18/ripplepay-app:latest
