@@ -6,20 +6,25 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js
-        uses: actions/setup-node@v3
+      - name: Check Out Repo
+        uses: actions/checkout@v2
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
         with:
-          node-version: "20"
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Install Dependencies
-        run: npm install
+      - name: Build and Push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: naveenkalagarla18/ripplepay-app:latest
 
-      - name: run prisma generate
-        run: cd packages/db && npx prisma generate
-
-      - name: Run Build
-        run: npm run build
+      - name: Verify Pushed Image
+        run: docker pull naveenkalagarla18/ripplepay-app:latest
